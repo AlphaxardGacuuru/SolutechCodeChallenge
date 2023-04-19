@@ -3,7 +3,7 @@
     import {
         Head
     } from '@inertiajs/vue3';
-    import Task from "@/Components/Task.vue"
+    import Task from "@/Components/TaskMedia.vue.js"
 
 </script>
 

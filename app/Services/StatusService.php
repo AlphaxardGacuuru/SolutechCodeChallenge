@@ -1,21 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services;
 
 use App\Models\Status;
-use App\Services\StatusService;
-use Illuminate\Http\Request;
 
-class StatusController extends Controller
+class StatusService
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(StatusService $service)
+    public function index()
     {
-        return $service->index();
+        return Status::all();
     }
 
     /**

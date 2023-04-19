@@ -1,21 +1,27 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services;
 
 use App\Models\Task;
-use App\Services\TaskService;
-use Illuminate\Http\Request;
 
-class TaskController extends Controller
+class TaskService
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(TaskService $service)
+    public function index()
     {
-        return $service->index();
+        $getTasks = Task::orderBy("id", "DESC")->get();
+
+        $tasks = [];
+
+        foreach ($getTasks as $task) {
+            array_push($tasks, $this->structure($task));
+        }
+
+        return response($tasks, 200);
     }
 
     /**
@@ -35,9 +41,11 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function show($id, TaskService $service)
+    public function show($id)
     {
-        return $service->show($id);
+        $task = Task::find($id);
+
+        return response($this->structure($task), 200);
     }
 
     /**
@@ -61,5 +69,19 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         //
+    }
+
+    /*
+     * Structure the data */
+    public function structure($task)
+    {
+        return [
+			"id" => $task->id,
+            "name" => $task->name,
+            "description" => $task->description,
+            "status" => $task->status->name,
+            "updatedAt" => $task->updated_at,
+            "createdAt" => $task->created_at,
+        ];
     }
 }

@@ -4,8 +4,7 @@
         Head
     } from '@inertiajs/vue3';
     import {
-        onMounted,
-        ref,
+        onMounted
     } from 'vue';
 
     import User from "@/Components/User.vue"
@@ -26,11 +25,10 @@
     <Head title="Users" />
 
     <AuthenticatedLayout>
-        <div v-for="(user, key) in users">
-            <User :key="key"
+        <div class="grid grid-cols-3 gap-4 mt-10">
+            <User v-for="(user, key) in users"
+                  :key="key"
                   :user="user" />
-
-            <!-- {{ user.name }} -->
         </div>
     </AuthenticatedLayout>
 </template>

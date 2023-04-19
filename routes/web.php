@@ -14,7 +14,7 @@ use Inertia\Inertia;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -34,13 +34,15 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
 Route::get('/users', function () {
     return Inertia::render('Users');
 })->middleware(['auth', 'verified'])->name('users');
 
-Route::get('/tasks', function () {
-    return Inertia::render('Tasks');
-})->middleware(['auth', 'verified'])->name('tasks');
+/*
+ * Task */
+Route::prefix("tasks")->middleware(["auth", "verified"])->group(function () {
+    Route::get("", fn() => Inertia::render('Tasks'))->middleware(['auth', 'verified'])->name('tasks');
+    Route::get("/{id}", fn() => Inertia::render('Task'))->middleware(['auth', 'verified'])->name('task.show');
+});
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
