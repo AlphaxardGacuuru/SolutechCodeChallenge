@@ -1,21 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services;
 
-use App\Services\UserService;
 use App\Models\User;
-use Illuminate\Http\Request;
 
-class UserController extends Controller
+class UserService
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(UserService $comment)
+    public function index()
     {
-        return $comment->index();
+        return User::all();
     }
 
     /**
