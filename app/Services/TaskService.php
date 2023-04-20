@@ -33,9 +33,19 @@ class TaskService
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store($request)
     {
-        //
+        // Get default status
+        $statusId = Status::where("name", "Pending")->first()->id;
+
+        $task = new Task;
+        $task->name = $request->input("name");
+        $task->description = $request->input("description");
+        $task->due_date = $request->input("dueDate");
+        $task->status_id = $statusId;
+        $task->save();
+
+        return response("Task Created", 200);
     }
 
     /**

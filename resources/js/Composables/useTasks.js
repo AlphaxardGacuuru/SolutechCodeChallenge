@@ -1,5 +1,6 @@
 import Axios from "axios";
 import { ref } from "vue";
+import { router } from "@inertiajs/vue3";
 
 export default function useTasks() {
     const tasks = ref([]);
@@ -19,6 +20,30 @@ export default function useTasks() {
     const getTask = async (id) => {
         let res = await Axios.get(`tasks/${id}`);
         task.value = res.data;
+    };
+
+    /*
+     * Create Task */
+    const onCreateTask = async (name, description, dueDate) => {
+        try {
+            const res = await Axios.post("tasks", {
+                name: name,
+                description: description,
+                dueDate: dueDate,
+            });
+            messages.value = [res.data];
+
+            // Redirect
+            router.get("/tasks");
+        } catch (err) {
+            const resErrors = err.response.data.errors;
+            var newError = [];
+            for (var resError in resErrors) {
+                newError.push(resErrors[resError]);
+            }
+            // Get other errors
+            messages.value = newError;
+        }
     };
 
     /*
@@ -105,5 +130,6 @@ export default function useTasks() {
         onAssign,
         onDueDate,
         onUpdateTask,
+        onCreateTask,
     };
 }

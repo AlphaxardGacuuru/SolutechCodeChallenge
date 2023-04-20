@@ -8,17 +8,28 @@
     } from '@inertiajs/vue3';
     import {
         onMounted,
+        ref
     } from 'vue';
 
     const {
         messages,
-        task,
-        getTask,
-        onUpdateTask
+        onCreateTask,
     } = useTasks()
 
+    const name = ref("")
+    const description = ref("")
+    const dueDate = ref("")
+
+    /*
+     * Prevent past date in date picker */
+    const minDate = () => {
+        var today = new Date().toISOString().split('T')[0];
+        var myDate = document.getElementById("dueDate");
+        myDate.setAttribute('min', today);
+    }
+
     onMounted(() => {
-        getTask(route().params.id)
+        minDate()
     })
 
 </script>
@@ -29,7 +40,7 @@
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Edit Task</h2>
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Create Task</h2>
         </template>
 
         <div class="py-12">
@@ -46,7 +57,7 @@
                             <h6>{{ message }}</h6>
                         </div>
 
-                        <form @submit.prevent="() => onUpdateTask(route().params.id)"
+                        <form @submit.prevent="() => onCreateTask(name, description, dueDate)"
                               class="mt-6 space-y-6">
                             <div>
                                 <InputLabel for="name"
@@ -54,10 +65,12 @@
 
                                 <input id="name"
                                        type="text"
+                                       placeholder="Name"
                                        class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900
                                            dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600
                                            focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-                                       v-model="task.name"
+                                       v-model="name"
+                                       required
                                        autofocus
                                        autocomplete="name" />
                             </div>
@@ -68,14 +81,31 @@
 
                                 <textarea id="name"
                                           type="text"
+                                          placeholder="Describe the task"
                                           class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900
                                            dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600
                                            focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-                                          v-model="task.description"
+                                          v-model="description"
                                           rows="10"
+                                          required
                                           autofocus
                                           autocomplete="description">
 										</textarea>
+                            </div>
+
+                            <div>
+                                <InputLabel for="description"
+                                            value="Description" />
+
+                                <input id="dueDate"
+                                       type="date"
+                                       class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900
+                                           dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600
+                                           focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                                       v-model="dueDate"
+                                       required
+                                       autofocus
+                                       autocomplete="description" />
                             </div>
 
                             <div class="flex items-center gap-4">

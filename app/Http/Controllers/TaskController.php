@@ -24,9 +24,16 @@ class TaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, TaskService $service)
     {
-        //
+        $this->validate($request, [
+            "name" => "required|string",
+            "description" => "required|string",
+            "dueDate" => "required|date",
+            "status_id" => "string",
+        ]);
+
+        return $service->store($request);
     }
 
     /**
@@ -49,10 +56,10 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id, TaskService $service)
     {
-		$this->validate($request, [
-			"name" => "string",
-			"description" => "string",
-		]);
+        $this->validate($request, [
+            "name" => "string",
+            "description" => "string",
+        ]);
         return $service->update($request, $id);
     }
 
