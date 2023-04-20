@@ -56,6 +56,18 @@ export default function useTasks() {
         getTask(taskId);
     };
 
+    /*
+     * Change Due Date */
+    const onDueDate = async (dueDate, taskId) => {
+        let res = await Axios.post(`tasks/${taskId}`, {
+            _method: "PUT",
+            dueDate: dueDate,
+        });
+
+		messages.value = [res.data]
+		getTask(taskId)
+    };
+
     return {
         tasks,
         task,
@@ -66,5 +78,6 @@ export default function useTasks() {
         getStati,
         onStatus,
         onAssign,
+        onDueDate,
     };
 }

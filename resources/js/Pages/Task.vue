@@ -3,7 +3,8 @@
         Head
     } from "@inertiajs/vue3";
     import {
-        onMounted
+        onMounted,
+        ref
     } from "vue";
     import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
     import Dropdown from "@/Components/Dropdown.vue";
@@ -13,6 +14,8 @@
     import useUsers from "@/Composables/useUsers";
 
 
+    const dueDate = ref("")
+
     const {
         task,
         stati,
@@ -21,6 +24,7 @@
         getStati,
         onStatus,
         onAssign,
+        onDueDate
     } = useTasks()
 
     const {
@@ -28,13 +32,23 @@
         getUsers
     } = useUsers()
 
+    /*
+     * Prevent past date in date picker */
+    const minDate = () => {
+        var today = new Date().toISOString().split('T')[0];
+        var myDate = document.getElementById("dueDate");
+        myDate.setAttribute('min', today);
+    }
+
     onMounted(() => {
         getTask(route().params.id)
         getUsers()
         getStati()
+        minDate()
     })
 
-    // Status Class
+    /*
+     * Status Class */
     const statusClass = (status) => {
         if (status == "Pending") {
             return "dark:text-yellow-500"
@@ -42,6 +56,16 @@
             return "text-green-500"
         } else {
             return "text-blue-500"
+        }
+    }
+
+    /*
+     * Conditionaly show status */
+    const hideStatus = (status, taskStatus) => {
+        if (taskStatus == "Pending" && status == "Done") {
+            return false
+        } else {
+            return true
         }
     }
 
@@ -69,9 +93,29 @@
 
                     <TaskMedia :task="task" />
 
-                    <div class="flex float-right justify-end">
+                    <div class="flex justify-start flex-col lg:flex-row">
+                        <!-- Due Date -->
+                        <div v-show="task.assigneeId"
+                             class="mr-10 mb-4">
+                            <h4 class="mb-2 dark:text-gray-300">Due Date</h4>
+                            <div class="inline-flex rounded-md">
+                                <input id="dueDate"
+                                       type="date"
+                                       :value="task.dueDate"
+                                       min=""
+                                       class="inline-flex items-center px-3 py-2 border border-transparent
+                                            text-sm leading-4 font-medium rounded-md
+                                            bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300
+                                            focus:outline-none transition ease-in-out duration-150 dark:text-gray-300 color-gray-300"
+                                       @input="(e) => onDueDate(e.target.value, route().params.id)">
+                                {{ dueDate }}
+                            </div>
+                        </div>
+                        <!-- Due Date End -->
+
                         <!-- Status Dropdown -->
-                        <div v-show="task.assigneeId">
+                        <div v-show="task.assigneeId"
+                             class=" mb-4">
                             <h4 class="mr-20 mb-2 dark:text-gray-300">Status</h4>
                             <Dropdown align="right"
                                       width="48"
@@ -97,14 +141,16 @@
                                 </template>
 
                                 <template #content>
-                                    <div v-for="(status, key) in stati"
-                                         :key="key"
-                                         :class="`block w-full px-4 py-2 text-left text-sm leading-5 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none
-                                     focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out
+                                    <template v-for="(status, key) in stati">
+                                        <div v-if="hideStatus(status.name, task.status)"
+                                             :key="key"
+                                             :class="`block w-full px-4 py-2 text-left text-sm leading-5 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none
+                                     focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out cursor-pointer
                                      ${statusClass(status.name)}`"
-                                         @click="() => task.status != status.name &&  onStatus(status.id, route().params.id)">
-                                        {{status.name}}
-                                    </div>
+                                             @click="() => task.status != status.name &&  onStatus(status.id, route().params.id)">
+                                            {{status.name}}
+                                        </div>
+                                    </template>
                                 </template>
                             </Dropdown>
                         </div>
@@ -166,7 +212,7 @@
                                           stroke-linejoin="round"
                                           d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
                                 </svg>
-                                <!-- Sponsor -->
+                                My Stuff
                             </a>
                         </div>
                     </div>

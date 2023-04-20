@@ -10,9 +10,9 @@
         if (props.task.status == "Pending") {
             return "dark:text-yellow-500"
         } else if (props.task.status == "Ongoing") {
-            return "text-green-900"
+            return "text-green-500"
         } else {
-            return "text-blue-900"
+            return "text-blue-500"
         }
     }
 

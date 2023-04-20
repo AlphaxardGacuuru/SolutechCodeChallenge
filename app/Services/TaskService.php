@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Models\Status;
 use App\Models\Task;
 use App\Models\UserTask;
+use Carbon\Carbon;
 
 class TaskService
 {
@@ -70,18 +72,23 @@ class TaskService
 
         if ($request->input("dueDate")) {
             $task->due_date = $request->input("dueDate");
-        }
 
-        if ($request->input("statusId")) {
-            $task->status_id = $request->input("statusId");
-
-			// Update user tasks as well
+            // Update user tasks as well
             $userTask = UserTask::where("task_id", $id)
                 ->orderBy("id", "DESC")
                 ->first();
 
-            $userTask->status_id = $request->input("statusId");
+            $userTask->due_date = $request->input("dueDate");
             $userTask->save();
+        }
+
+        $statusId = $request->input("statusId");
+
+        if ($statusId) {
+            $task->status_id = $statusId;
+
+            // Change UserTask Status
+            $this->handleStatus($statusId, $id);
         }
 
         $task->save();
@@ -101,6 +108,32 @@ class TaskService
     }
 
     /*
+     * Handle Status */
+    public function handleStatus($statusId, $id)
+    {
+        // Update user tasks as well
+        $userTask = UserTask::where("task_id", $id)
+            ->orderBy("id", "DESC")
+            ->first();
+
+        $userTask->status_id = $statusId;
+
+        // If status has changed to Ongoing then add start date as today
+        $statusName = Status::find($statusId)->name;
+
+        if ($statusName == "Ongoing") {
+            $userTask->start_time = Carbon::now();
+        } elseif ($statusName == "Done") {
+            $userTask->end_time = Carbon::now();
+        } else {
+            $userTask->start_time = null;
+            $userTask->end_time = null;
+        }
+
+        $userTask->save();
+    }
+
+    /*
      * Structure the data */
     public function structure($task)
     {
@@ -109,6 +142,7 @@ class TaskService
             "name" => $task->name,
             "description" => $task->description,
             "status" => $task->status->name,
+            "dueDate" => $task->due_date,
             "assigneeId" => $task->assigneeId(),
             "assigneeName" => $task->assigneeName(),
             "updatedAt" => $task->updated_at,
