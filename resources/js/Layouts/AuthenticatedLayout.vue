@@ -37,10 +37,6 @@
                                          :active="route().current('dashboard')">
                                     Dashboard
                                 </NavLink>
-                                <NavLink :href="route('users')"
-                                         :active="route().current('users')">
-                                    Users
-                                </NavLink>
                                 <NavLink :href="route('tasks')"
                                          :active="route().current('tasks')">
                                     Tasks
@@ -120,10 +116,6 @@
                         <ResponsiveNavLink :href="route('dashboard')"
                                            :active="route().current('dashboard')">
                             Dashboard
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink :href="route('users')"
-                                           :active="route().current('users')">
-                            Users
                         </ResponsiveNavLink>
                         <ResponsiveNavLink :href="route('tasks')"
                                            :active="route().current('tasks')">

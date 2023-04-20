@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Task;
+use App\Models\UserTask;
 
 class TaskService
 {
@@ -55,9 +56,37 @@ class TaskService
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Task $task)
+    public function update($request, $id)
     {
-        //
+        $task = Task::find($id);
+
+        if ($request->input("name")) {
+            $task->name = $request->input("name");
+        }
+
+        if ($request->input("description")) {
+            $task->description = $request->input("description");
+        }
+
+        if ($request->input("dueDate")) {
+            $task->due_date = $request->input("dueDate");
+        }
+
+        if ($request->input("statusId")) {
+            $task->status_id = $request->input("statusId");
+
+			// Update user tasks as well
+            $userTask = UserTask::where("task_id", $id)
+                ->orderBy("id", "DESC")
+                ->first();
+
+            $userTask->status_id = $request->input("statusId");
+            $userTask->save();
+        }
+
+        $task->save();
+
+        return response("Task Updated", 200);
     }
 
     /**
@@ -76,10 +105,12 @@ class TaskService
     public function structure($task)
     {
         return [
-			"id" => $task->id,
+            "id" => $task->id,
             "name" => $task->name,
             "description" => $task->description,
             "status" => $task->status->name,
+            "assigneeId" => $task->assigneeId(),
+            "assigneeName" => $task->assigneeName(),
             "updatedAt" => $task->updated_at,
             "createdAt" => $task->created_at,
         ];

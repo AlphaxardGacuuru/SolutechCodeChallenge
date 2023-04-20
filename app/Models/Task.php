@@ -35,4 +35,32 @@ class Task extends Model
     {
         return $this->belongsTo(Status::class);
     }
+
+    public function userTask()
+    {
+        return $this->hasMany(UserTask::class);
+    }
+
+    /*
+     * Custom Functions */
+
+    // Get Asignee ID
+    public function assigneeId()
+    {
+        // Check if task is assigned
+        if ($this->userTask->count()) {
+            return $this->userTask()->orderBy("id", "DESC")->first()->user_id;
+        }
+    }
+
+    // Get Asignee Name
+    public function assigneeName()
+    {
+        // Check if task is assigned
+        if ($this->userTask->count()) {
+            $assigneeId = $this->userTask()->orderBy("id", "DESC")->first()->user_id;
+
+			return User::find($assigneeId)->name;
+        }
+    }
 }

@@ -14,9 +14,9 @@ class StatusSeeder extends Seeder
      */
     public function run()
     {
-        $statii = ["Pending", "Ongoing", "Done"];
+        $stati = ["Pending", "Ongoing", "Done"];
 
-        foreach ($statii as $status) {
+        foreach ($stati as $status) {
             Status::factory()->create(["name" => $status]);
         }
     }

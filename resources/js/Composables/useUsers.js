@@ -9,7 +9,7 @@ export default function useUsers() {
         users.value = res.data;
     };
     return {
-		users,
-		getUsers
-	};
+        users,
+        getUsers,
+    };
 }

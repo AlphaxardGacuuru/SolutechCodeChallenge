@@ -19,6 +19,7 @@ class TaskFactory extends Factory
         return [
             "name" => fake()->catchPhrase(),
             "description" => fake()->realText($maxNbChars = 200, $indexSize = 2),
+			"due_date" => fake()->dateTime(),
 			"created_at" => fake()->dateTime()
         ];
     }

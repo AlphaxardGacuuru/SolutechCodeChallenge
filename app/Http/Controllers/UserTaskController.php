@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\UserTask;
+use App\Services\UserTaskService;
 use Illuminate\Http\Request;
 
 class UserTaskController extends Controller
@@ -23,9 +24,17 @@ class UserTaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, UserTaskService $service)
     {
-        //
+        $this->validate($request, [
+            "userId" => "required",
+            "taskId" => "required",
+            // "dueDate" => "required",
+            // "remarks" => "required",
+            // "statusId" => "required",
+        ]);
+
+        return $service->store($request);
     }
 
     /**
@@ -46,9 +55,9 @@ class UserTaskController extends Controller
      * @param  \App\Models\UserTask  $userTask
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, UserTask $userTask)
+    public function update(Request $request, $id, UserTaskService $service)
     {
-        //
+        return $service->update($request, $id);
     }
 
     /**
