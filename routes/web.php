@@ -41,8 +41,9 @@ Route::get('/users', function () {
 /*
  * Task */
 Route::prefix("tasks")->middleware(["auth", "verified"])->group(function () {
-    Route::get("", fn() => Inertia::render('Tasks'))->middleware(['auth', 'verified'])->name('tasks');
-    Route::get("/{id}", fn() => Inertia::render('Task'))->middleware(['auth', 'verified'])->name('task.show');
+    Route::get("", fn() => Inertia::render('Task/Tasks'))->middleware(['auth', 'verified'])->name('tasks');
+    Route::get("/{id}", fn() => Inertia::render('Task/Task'))->middleware(['auth', 'verified'])->name('task.show');
+    Route::get("/{id}/edit", fn() => Inertia::render('Task/TaskEdit'))->middleware(['auth', 'verified'])->name('task.edit');
 });
 
 require __DIR__ . '/auth.php';

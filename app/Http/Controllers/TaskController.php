@@ -49,6 +49,10 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id, TaskService $service)
     {
+		$this->validate($request, [
+			"name" => "string",
+			"description" => "string",
+		]);
         return $service->update($request, $id);
     }
 

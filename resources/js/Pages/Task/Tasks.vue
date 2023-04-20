@@ -1,12 +1,15 @@
 <script setup>
-    import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
     import {
         Head
     } from '@inertiajs/vue3';
+	import {
+	Link
+	} from '@inertiajs/vue3';
     import {
         onMounted
     } from 'vue';
-
+    import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+    import PrimaryButton from '@/Components/PrimaryButton.vue';
     import TaskMedia from "@/Components/TaskMedia.vue"
 
     import useTasks from "@/Composables/useTasks"
@@ -25,10 +28,17 @@
     <Head title="Tasks" />
 
     <AuthenticatedLayout>
+        <template #header>
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Tasks</h2>
+        </template>
 
         <div
              class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
             <div class="max-w-7xl mx-auto p-6 lg:p-8">
+
+                <PrimaryButton class="ml-4 hover:opacity-25">
+                    <Link href="/tasks/create">Create Task</Link>
+                </PrimaryButton>
 
                 <div class="mt-16">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">

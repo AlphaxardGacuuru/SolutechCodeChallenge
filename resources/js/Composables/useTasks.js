@@ -22,6 +22,31 @@ export default function useTasks() {
     };
 
     /*
+     * Update Task */
+    const onUpdateTask = async (taskId) => {
+        try {
+            let res = await Axios.post(`tasks/${taskId}`, {
+                _method: "PUT",
+                name: task.value.name,
+                description: task.value.description,
+            });
+
+            messages.value = [res.data];
+
+            // Fetch Task
+            getTask(taskId);
+        } catch (err) {
+            const resErrors = err.response.data.errors;
+            var newError = [];
+            for (var resError in resErrors) {
+                newError.push(resErrors[resError]);
+            }
+            // Get other errors
+            messages.value = newError;
+        }
+    };
+
+    /*
      * Get Statuses */
     const getStati = async () => {
         let res = await Axios.get("status");
@@ -64,8 +89,8 @@ export default function useTasks() {
             dueDate: dueDate,
         });
 
-		messages.value = [res.data]
-		getTask(taskId)
+        messages.value = [res.data];
+        getTask(taskId);
     };
 
     return {
@@ -79,5 +104,6 @@ export default function useTasks() {
         onStatus,
         onAssign,
         onDueDate,
+        onUpdateTask,
     };
 }
