@@ -43,10 +43,10 @@ class DashboardService
      * Fetch Tasks by Percentage for Tailwind */
     public function getTaskByPercentageForTailwind($value)
     {
-        $p = $value > 0 ? $value / 10 : 1;
-        $p = round($p, 0);
+        $p = $value > 0 ? $value / 10 : 0;
+        $p = round($p, 0) + 2;
 
-        return "w-" . $p . "/12 font-light pl-2 rounded-xl";
+        return $p;
     }
 
     /*
