@@ -13,9 +13,9 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(UserService $comment)
+    public function index(UserService $service)
     {
-        return $comment->index();
+        return $service->index();
     }
 
     /**
