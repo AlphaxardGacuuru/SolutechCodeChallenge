@@ -72,6 +72,19 @@ export default function useTasks() {
     };
 
     /*
+     * Delete Task */
+    const onDeleteTask = async (taskId) => {
+        let res = await Axios.delete(`tasks/${taskId}`);
+
+        messages.value = [res.data];
+		
+        // Redirect
+        setTimeout(() => {
+            router.get("/tasks");
+        }, 1000);
+    };
+
+    /*
      * Get Statuses */
     const getStati = async () => {
         let res = await Axios.get("status");
@@ -131,5 +144,6 @@ export default function useTasks() {
         onDueDate,
         onUpdateTask,
         onCreateTask,
+        onDeleteTask,
     };
 }

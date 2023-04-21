@@ -112,9 +112,11 @@ class TaskService
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Task $task)
+    public function destroy($id)
     {
-        //
+        Task::find($id)->delete();
+
+        return response("Task Deleted", 200);
     }
 
     /*

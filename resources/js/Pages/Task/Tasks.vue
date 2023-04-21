@@ -1,10 +1,8 @@
 <script setup>
     import {
-        Head
+        Head,
+        Link
     } from '@inertiajs/vue3';
-	import {
-	Link
-	} from '@inertiajs/vue3';
     import {
         onMounted
     } from 'vue';
@@ -36,15 +34,17 @@
              class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
             <div class="max-w-7xl mx-auto p-6 lg:p-8">
 
-                <PrimaryButton class="ml-4 hover:opacity-25">
-                    <Link href="/tasks/create">Create Task</Link>
-                </PrimaryButton>
+                <Link href="/tasks/create">
+                <PrimaryButton class="ml-4 hover:opacity-25">Create Task</PrimaryButton>
+                </Link>
 
                 <div class="mt-16">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-                        <TaskMedia v-for="(task, key) in tasks"
-                                   :key="key"
+                        <Link v-for="(task, key) in tasks"
+                              :href="`/tasks/${task.id}`">
+                        <TaskMedia :key="key"
                                    :task="task" />
+                        </Link>
                     </div>
                 </div>
 

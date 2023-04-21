@@ -1,6 +1,7 @@
 <script setup>
     import {
-        Head
+        Head,
+        Link
     } from "@inertiajs/vue3";
     import {
         onMounted,
@@ -160,7 +161,7 @@
                         <!-- Status Dropdown End -->
 
                         <!-- Assignee Dropdown -->
-                        <div>
+                        <div class="mr-10">
                             <h4 class="mr-6 mb-2 dark:text-gray-300">Assignee</h4>
                             <Dropdown align="right"
                                       width="48">

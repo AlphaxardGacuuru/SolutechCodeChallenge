@@ -1,20 +1,31 @@
 <script setup>
-    import InputLabel from '@/Components/InputLabel.vue';
-    import PrimaryButton from '@/Components/PrimaryButton.vue';
-    import useTasks from '@/Composables/useTasks';
-    import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
     import {
         Head,
+        Link
     } from '@inertiajs/vue3';
     import {
         onMounted,
+        ref
     } from 'vue';
+    import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+    import InputLabel from '@/Components/InputLabel.vue';
+    import PrimaryButton from '@/Components/PrimaryButton.vue';
+    import SecondaryButton from '@/Components/SecondaryButton.vue';
+    import DangerButton from '@/Components/DangerButton.vue';
+    import Modal from '@/Components/Modal.vue';
+
+    import useTasks from '@/Composables/useTasks';
+
+    const modal = ref(false)
+
+    const openModal = () => modal.value = !modal.value
 
     const {
         messages,
         task,
         getTask,
-        onUpdateTask
+        onUpdateTask,
+        onDeleteTask
     } = useTasks()
 
     onMounted(() => {
@@ -34,6 +45,9 @@
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
+                <PrimaryButton class="ml-4 hover:opacity-25">
+                    <Link :href="`/tasks/${route().params.id}`">Back</Link>
+                </PrimaryButton>
                 <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                     <section>
 
@@ -78,10 +92,34 @@
 										</textarea>
                             </div>
 
-                            <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-4 justify-end">
+                                <DangerButton class="hover:opacity-25"
+                                              @click.prevent="openModal">Delete</DangerButton>
                                 <PrimaryButton>Save</PrimaryButton>
                             </div>
                         </form>
+
+                        <Modal :show="modal"
+                               @close="openModal">
+                            <div class="p-6">
+                                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                                    Are you sure you want to delete the task?
+                                </h2>
+
+                                <div class="mt-6 flex justify-end">
+                                    <SecondaryButton @click="openModal">Cancel</SecondaryButton>
+
+                                    <DangerButton class="ml-3"
+                                                  @click="() => {
+													onDeleteTask(route().params.id)
+													openModal()
+													}">
+                                        Delete Task
+                                    </DangerButton>
+                                </div>
+                            </div>
+                        </Modal>
+
                     </section>
                 </div>
             </div>

@@ -28,7 +28,7 @@ class TaskController extends Controller
     {
         $this->validate($request, [
             "name" => "required|string",
-            "description" => "required|string",
+            "description" => "required|string|max:255",
             "dueDate" => "required|date",
             "status_id" => "string",
         ]);
@@ -69,8 +69,8 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Task $task)
+    public function destroy($id, TaskService $service)
     {
-        //
+        return $service->destroy($id);
     }
 }
