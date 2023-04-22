@@ -11,14 +11,14 @@ export default function useTasks() {
     /*
      * Fetch listing of Tasks */
     const getTasks = async () => {
-        let res = await Axios.get("tasks");
+        let res = await Axios.get("/api/tasks");
         tasks.value = res.data;
     };
 
     /*
      * Fetch one Task */
     const getTask = async (id) => {
-        let res = await Axios.get(`tasks/${id}`);
+        let res = await Axios.get(`/api/tasks/${id}`);
         task.value = res.data;
     };
 
@@ -26,7 +26,7 @@ export default function useTasks() {
      * Create Task */
     const onCreateTask = async (name, description, dueDate) => {
         try {
-            const res = await Axios.post("tasks", {
+            const res = await Axios.post("/api/tasks", {
                 name: name,
                 description: description,
                 dueDate: dueDate,
@@ -50,7 +50,7 @@ export default function useTasks() {
      * Update Task */
     const onUpdateTask = async (taskId) => {
         try {
-            let res = await Axios.post(`tasks/${taskId}`, {
+            let res = await Axios.post(`/api/tasks/${taskId}`, {
                 _method: "PUT",
                 name: task.value.name,
                 description: task.value.description,
@@ -74,7 +74,7 @@ export default function useTasks() {
     /*
      * Delete Task */
     const onDeleteTask = async (taskId) => {
-        let res = await Axios.delete(`tasks/${taskId}`);
+        let res = await Axios.delete(`/api/tasks/${taskId}`);
 
         messages.value = [res.data];
 		
@@ -87,14 +87,14 @@ export default function useTasks() {
     /*
      * Get Statuses */
     const getStati = async () => {
-        let res = await Axios.get("status");
+        let res = await Axios.get("/api/status");
         stati.value = res.data;
     };
 
     /*
      * Change Task Status */
     const onStatus = async (statusId, taskId) => {
-        let res = await Axios.post(`tasks/${taskId}`, {
+        let res = await Axios.post(`/api/tasks/${taskId}`, {
             _method: "PUT",
             statusId: statusId,
         });
@@ -108,7 +108,7 @@ export default function useTasks() {
     /*
      * Assign User Task */
     const onAssign = async (userId, taskId) => {
-        let res = await Axios.post("user-tasks", {
+        let res = await Axios.post("/api/user-tasks", {
             userId: userId,
             taskId: taskId,
         });
@@ -122,7 +122,7 @@ export default function useTasks() {
     /*
      * Change Due Date */
     const onDueDate = async (dueDate, taskId) => {
-        let res = await Axios.post(`tasks/${taskId}`, {
+        let res = await Axios.post(`/api/tasks/${taskId}`, {
             _method: "PUT",
             dueDate: dueDate,
         });

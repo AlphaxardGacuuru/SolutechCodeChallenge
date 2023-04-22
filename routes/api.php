@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-// Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
 // Dashboard Controller
     Route::prefix("dashboard")->group(function () {
         Route::get("tasks", [DashboardController::class, "tasks"]);
@@ -36,4 +36,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
         "tasks" => TaskController::class,
         "user-tasks" => UserTaskController::class,
     ]);
-// });
+});

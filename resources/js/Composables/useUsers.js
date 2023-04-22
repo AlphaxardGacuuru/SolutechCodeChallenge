@@ -5,7 +5,7 @@ export default function useUsers() {
     const users = ref([]);
 
     const getUsers = async () => {
-        let res = await Axios.get("users");
+        let res = await Axios.get("/api/users");
         users.value = res.data;
     };
     return {
