@@ -40,14 +40,10 @@ class DashboardService
     }
 
     /*
-     * Fetch Tasks by Percentage for Tailwind */
-    public function getTaskByPercentageForTailwind($value)
-    {
-        $p = $value > 0 ? $value / 10 : 0;
-        $p = round($p, 0) + 2;
-
-        return $p;
-    }
+     *
+     *     User Data
+     *
+     */
 
     /*
      * Fetch all Users */
@@ -78,15 +74,5 @@ class DashboardService
         $percentage = $withTasks > 0 ? $withTasks / $totalUsers * 100 : 0;
 
         return round($percentage, 1);
-    }
-
-    /*
-     * Fetch Tasks by Percentage for Tailwind */
-    public function getUserPercentageForTailwind($value)
-    {
-        $p = $value > 0 ? $value / 10 : 0;
-        $p = round($p, 0) + 2;
-
-        return "w-" . $p . "/12 font-light pl-2 rounded-xl";
     }
 }

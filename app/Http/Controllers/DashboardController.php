@@ -25,17 +25,14 @@ class DashboardController extends Controller
             "pending" => [
                 "total" => $totalPending,
                 "percent" => $pendingPercent,
-                "tailwind" => $service->getTaskByPercentageForTailwind($pendingPercent),
             ],
             "ongoing" => [
                 "total" => $totalOngoing,
                 "percent" => $ongoingPercent,
-                "tailwind" => $service->getTaskByPercentageForTailwind($ongoingPercent),
             ],
             "done" => [
                 "total" => $totalDone,
                 "percent" => $donePercent,
-                "tailwind" => $service->getTaskByPercentageForTailwind($donePercent),
             ],
         ], 200);
     }
@@ -48,11 +45,13 @@ class DashboardController extends Controller
 
         // Fetch Data
         return response([
-            "users" => [
-                "total" => $service->getUsers(),
-                "withTasks" => $service->getUsersWithTasks(),
-                "percentage" => $withTasksPercentage,
-                "tailwind" => $service->getUserPercentageForTailwind($withTasksPercentage),
+            "users" => $service->getUsers(),
+            "withTasks" => [
+                "total" => $service->getUsersWithTasks(),
+                "percent" => $withTasksPercentage,
+            ],
+            "withoutTasks" => [
+                "percent" => (100 - $withTasksPercentage),
             ],
         ], 200);
     }

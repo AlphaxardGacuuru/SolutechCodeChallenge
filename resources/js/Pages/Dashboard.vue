@@ -43,7 +43,7 @@
         <div
              class="relative sm:flex sm:justify-center sm:items-center bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 selection:bg-red-500 selection:text-white">
 
-            <div class="max-w-7xl mx-auto p-6 lg:p-8">
+            <div class="mx-auto p-6 lg:p-8 w-screen">
 
                 <div class="mt-16">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
@@ -53,7 +53,7 @@
                             <div class="w-full">
                                 <h1 class="mt-6 text-4xl font-thin text-gray-900 dark:text-white mb-10">Tasks</h1>
 
-                                <div class="flex justify-between dark:text-white gap-2 flex-col">
+                                <div class="flex justify-between dark:text-white gap-2">
                                     <div>
                                         <h1>Total</h1>
                                         <p class="dark:text-white">{{ tasks.tasks }}</p>
@@ -61,32 +61,14 @@
                                     <div>
                                         <h1 class="text-yellow-500">Pending</h1>
                                         <p class="text-yellow-500">{{ tasks.pending?.total }}</p>
-                                        <div class="md:w-96 bg-gray-100 mt-2 rounded-xl">
-                                            <div id="pending-bar"
-                                                 class="font-light pl-2 rounded-xl bg-yellow-500">
-                                                {{ tasks.pending?.percent }}%
-                                            </div>
-                                        </div>
                                     </div>
                                     <div>
                                         <h1 class="text-green-500">Ongoing</h1>
                                         <p class="text-green-500">{{ tasks.ongoing?.total }}</p>
-                                        <div class="md:w-96 bg-gray-100 mt-2 rounded-xl">
-                                            <div v-show="tasks"
-                                                 :class="`${tasks.ongoing?.tailwind}/12 font-light pl-2 rounded-xl bg-green-500`">
-                                                {{ tasks.ongoing?.percent }}%
-                                            </div>
-                                        </div>
                                     </div>
                                     <div>
                                         <h1 class="text-blue-500">Done</h1>
                                         <p class="text-blue-500">{{ tasks.done?.total }}</p>
-                                        <div class="md:w-96 bg-gray-100 mt-2 rounded-xl">
-                                            <div
-                                                 :class="`${tasks.done?.tailwind}/12 font-light pl-2 rounded-xl bg-blue-500`">
-                                                {{ tasks.done?.percent }}%
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -96,22 +78,41 @@
                            class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
 
                             <div class="w-full">
-                                <h2 class="mt-6 text-xl font-semibold text-gray-900 dark:text-white mb-10">Users</h2>
+                                <h2 class="mt-6 text-4xl font-semibold text-gray-900 dark:text-white mb-10">Users</h2>
 
-                                <div class="flex justify-between dark:text-white gap-2 flex-col">
+                                <div class="flex justify-between dark:text-white gap-2">
                                     <div>
                                         <h1>Total</h1>
-                                        <p class="dark:text-white">{{ users.users?.total }}</p>
+                                        <p class="dark:text-white">{{ users?.users }}</p>
                                     </div>
                                     <div>
                                         <h1>Users with tasks</h1>
-                                        <p>{{ users.users?.withTasks }}</p>
-                                        <div class="md:w-96 bg-gray-100 mt-2 rounded-xl">
-                                            <div :class="`${users.users?.tailwind} bg-blue-500`">
-                                                {{ users.users?.percentage }}%
-                                            </div>
-                                        </div>
+                                        <p>{{ users.withTasks?.total }}</p>
                                     </div>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a href="#"
+                           class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
+
+                            <div class="w-full">
+                                <h1 class="mt-6 text-4xl font-thin text-gray-900 dark:text-white mb-10">Tasks</h1>
+
+                                <div class="flex justify-between dark:text-white gap-2">
+                                    <canvas id="taskChart"></canvas>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a href="#"
+                           class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
+
+                            <div class="w-full">
+                                <h1 class="mt-6 text-4xl font-thin text-gray-900 dark:text-white mb-10">Users</h1>
+
+                                <div class="flex justify-between dark:text-white gap-2">
+                                    <canvas id="userChart"></canvas>
                                 </div>
                             </div>
                         </a>
